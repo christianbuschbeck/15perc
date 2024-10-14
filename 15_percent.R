@@ -11,7 +11,7 @@ set.seed(1)
 ###  F U N C T I O N S ######
 #############################
 
-weibull_verschiebung <-function(pars,mit,d_org){
+weibull_shift <-function(pars,mit,d_org){
   
   r_new <- rweibull(1000000,shape = pars ,scale = mit/gamma(1+ 1/pars))
   
@@ -83,13 +83,13 @@ len <- 10
 
 #load data
 trend      <- read.csv2("./data/heizenergieverbrauch_trend.csv")
-verteilung <- read.csv2("./data/heizenergieverbrauch_verteilung.csv")
+distro     <- read.csv2("./data/heizenergieverbrauch_verteilung.csv")
 
 res_values <- NULL
-head(verteilung)
+head(distro)
 
-for(i in 1:nrow(verteilung)){
-  res_values <- c(res_values,rep(verteilung[i,1],verteilung[i,2]*100000))
+for(i in 1:nrow(distro)){
+  res_values <- c(res_values,rep(distro[i,1],distro[i,2]*100000))
 }
 
 #UBA
@@ -185,7 +185,7 @@ q_org_res   <- round(qweibull(0.15, shape = fit_org_res$estimate["shape"],scale 
 
 
 p_res_2030_zi_40 <- optim(par=fit_org_res$estimate["shape"],
-                          fn=weibull_verschiebung,
+                          fn=weibull_shift,
                           mit=res_2030_zi_40,
                           d_org = d_org_res,
                           control=list(trace=1),
@@ -195,7 +195,7 @@ p_res_2030_zi_40 <- optim(par=fit_org_res$estimate["shape"],
 p_res_2030_zi_40 <- c(p_res_2030_zi_40,res_2030_zi_40 / gamma(1+ 1/p_res_2030_zi_40) )
 
 p_res_2040_zi_40 <- optim(par=fit_org_res$estimate["shape"],
-                          fn=weibull_verschiebung,
+                          fn=weibull_shift,
                           mit=res_2040_zi_40,
                           d_org = d_org_res,
                           control=list(trace=1),
@@ -205,7 +205,7 @@ p_res_2040_zi_40 <- optim(par=fit_org_res$estimate["shape"],
 p_res_2040_zi_40 <- c(p_res_2040_zi_40,res_2040_zi_40 / gamma(1+ 1/p_res_2040_zi_40) )
 
 p_res_2030_zi_70 <- optim(par=fit_org_res$estimate["shape"],
-                          fn=weibull_verschiebung,
+                          fn=weibull_shift,
                           mit=res_2030_zi_70,
                           d_org = d_org_res,
                           control=list(trace=1),
@@ -216,7 +216,7 @@ p_res_2030_zi_70 <- c(p_res_2030_zi_70,res_2030_zi_70 / gamma(1+ 1/p_res_2030_zi
 
 
 p_res_2040_zi_70 <- optim(par=fit_org_res$estimate["shape"],
-                          fn=weibull_verschiebung,
+                          fn=weibull_shift,
                           mit=res_2040_zi_70,
                           d_org = d_org_res,
                           control=list(trace=1),
@@ -252,7 +252,7 @@ for(i in 1:24){
   
   
   res_zi_40 <- optim(par=fit_org_res$estimate["shape"],
-                     fn=weibull_verschiebung,
+                     fn=weibull_shift,
                      mit=trend_zi_40,
                      d_org = d_org_res,
                      control=list(trace=1),
@@ -261,7 +261,7 @@ for(i in 1:24){
                      upper=100)$par
   
   res_zi_70 <- optim(par=fit_org_res$estimate["shape"],
-                     fn=weibull_verschiebung,
+                     fn=weibull_shift,
                      mit=trend_zi_70,
                      d_org = d_org_res,
                      control=list(trace=1),
@@ -338,7 +338,7 @@ for(i in 1:24){
   
   
   nonres_zi_25 <- optim(par=fit_org_nonres$estimate["shape"],
-                     fn=weibull_verschiebung,
+                     fn=weibull_shift,
                      mit=trend_zi_25,
                      d_org = d_org_nonres,
                      control=list(trace=1),
@@ -347,7 +347,7 @@ for(i in 1:24){
                      upper=100)$par
   
   nonres_zi_45 <- optim(par=fit_org_nonres$estimate["shape"],
-                     fn=weibull_verschiebung,
+                     fn=weibull_shift,
                      mit=trend_zi_45,
                      d_org = d_org_nonres,
                      control=list(trace=1),
@@ -482,7 +482,7 @@ legend("bottomleft",c("UBA Target 40","UBA Target 55","UBA Target 70", "Agora ye
 dev.off()
 
 
-### Verschiebung
+### shift
 col_30 <- "purple"
 col_40 <- "gold"
 
