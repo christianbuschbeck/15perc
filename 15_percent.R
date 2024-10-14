@@ -380,6 +380,36 @@ q_vec_zi_45_sd <- apply(q_vec_zi_45_df,2,FUN=sd,na.rm=T,simplify=T)
 ### P L O T S   ######
 ######################
 
+### Example Area Plot
+
+png(paste(path,"tex/figures/fig3.png",sep=""),width=700,height=500)
+
+mit = 150 
+r_ex1 <- rgamma(1000000,shape = 4 ,rate = 4/mit)
+
+mit = 140
+r_ex2 <- rgamma(1000000,shape = 0.5 ,rate = 0.5/mit)
+r_ex3 <- rgamma(1000000,shape = 4 ,rate = 4/mit)
+
+d_ex1 <- density(r_ex1,from=0,to=400)
+d_ex2 <- density(r_ex2,from=0,to=400)
+d_ex3 <- density(r_ex3,from=0,to=400)
+
+col_ex_2 <- rgb(0,0,1,alpha=0.5)
+col_ex_3 <- rgb(1,0,0,alpha=0.5)
+
+plot(d_ex1,col="black",type="l",xlim=c(0,400),ylim=c(0,0.013),
+     main = "Areas between probability density functions",
+     xlab="Energy Efficiency",
+     lwd=6)
+polygon(c(d_ex1$x,rev(d_ex1$x)),c(d_ex1$y,rev(d_ex2$y)),col=col_ex_2)
+polygon(c(d_ex1$x,rev(d_ex1$x)),c(d_ex1$y,rev(d_ex3$y)),col=col_ex_3)
+lines(d_ex1,col="black",lwd=6)
+lines(d_ex2,col="blue",lwd=2)
+lines(d_ex3,col="red",lwd=2)
+legend("topright",c("Gamma 1 (mean: 150)","Gamma 2 (mean: 140)","Gamma 3 (mean: 140)","Area between 1 & 2","Area between 1 & 3"),col=c("black","blue","red",col_ex_2,col_ex_3),lty = c(1,1,1,NA,NA),pch=c(NA,NA,NA,15,15),lwd=c(6,2,2,NA,NA))
+dev.off()
+
 ## Res 1 (Histogram)
 
 col1 <- "grey"
